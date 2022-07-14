@@ -23,15 +23,12 @@ public abstract class Main {
          definition provided
        - Your program execution must run from the main() method in Main.java
        - The rest is up to you. Good luck and happy coding!
-
      */
 
     static final String INPUT_FILE = "https://jservice.kenzie.academy/api/clues/";
 
-
     // If needed to get names of categories
     static final String INPUT_FILE2 = "https://jservice.kenzie.academy/api/categories/";
-
 
     public static String formatURL(String URLString, int clueNumber) {
 
@@ -75,10 +72,7 @@ public abstract class Main {
         }
     }
 
-
-
     public static String findSpecificClue(int clueNumber) throws com.fasterxml.jackson.core.JsonProcessingException, IOException {
-
 
         String specificClue = CustomHttpClient.sendGET(formatURL(INPUT_FILE, clueNumber));
 
@@ -99,7 +93,6 @@ public abstract class Main {
 //    }
 
     public static int randomNumber() {
-        //TODO: Fill out method and update return value
 
         int min = 1;
         int max = 3000;
@@ -108,14 +101,11 @@ public abstract class Main {
         int upperbound =3000;
         int int_random = random.nextInt(upperbound);
 
-
-      //  double random = Math.floor(Math.random() * (max - min + 1) + min);
-       // return (int) random;
+        //  double random = Math.floor(Math.random() * (max - min + 1) + min);
+        // return (int) random;
 
         return int_random;
     }
-
-
 
     public static String randomIncorrectResponse() {
 
@@ -157,8 +147,6 @@ public abstract class Main {
         return "";
     }
 
-
-
     public static String numberToString(int number) {
 
         String zero = "zero";
@@ -172,7 +160,6 @@ public abstract class Main {
         String eight = "eight";
         String nine = "nine";
         String ten = "ten";
-
 
         if (number == 0) {
             return zero;
@@ -207,33 +194,24 @@ public abstract class Main {
         if (number == 10) {
             return ten;
         }
-
         return "";
     }
-
 
     @SuppressWarnings("unchecked")
     public static String pullTitle(int num) throws JsonProcessingException {
 
         String category = CustomHttpClient.sendGET(formatURL(INPUT_FILE2, num));
-
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-
             Map<String, String> result = objectMapper.readValue(category, HashMap.class);
-
             String answer = (String) result.get("title");
 
             return answer.toLowerCase();
-
-
         } catch (JsonProcessingException e) {
             System.out.println(e.getMessage());
         }
         return "";
     }
-
-
 
     public static void endGame(int number) {
 
@@ -249,10 +227,7 @@ public abstract class Main {
         if (number == 0) {
             System.out.println("Maybe you should try a different game. Seeing that you didn't get any questions correct");
         }
-
     }
-
-
 
     @SuppressWarnings("unchecked")
     public static HashMap triviaData(int counter, String question, Boolean correct) throws NullPointerException {
@@ -264,23 +239,18 @@ public abstract class Main {
         map.put("Question ", question);
         map.put("Was Right ", String.valueOf(correct));
 
-
         return (HashMap) map;
     }
-
-
 
     @SuppressWarnings("unchecked")
     public static String printTriviaData(HashMap list){
 
         Map<String, Object> map = new HashMap<>(list);
-
         Set<String> keys = map.keySet();
         ArrayList<String> keyList = new ArrayList<>(keys);
 
         Collection<Object> values = map.values();
         ArrayList<Object> valuesList = new ArrayList<Object>(values);
-
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 1; j++) {
@@ -289,37 +259,28 @@ public abstract class Main {
                 System.out.println();
             }
         }
-
         Set<Map.Entry<String,Object>> entrySet = map.entrySet();
         ArrayList<Map.Entry<String, Object>> listOfEntry = new ArrayList<>(entrySet);
 
-
         return String.valueOf(map);
     }
-
-
 
     public static HashMap storeTriviaData(){
 
         //ArrayList<Map<String, Object>> endFormat = new ArrayList<>();
         HashMap<String, Object> map = new HashMap<>();
 
-
         return map;
     }
 
-
-
     @SuppressWarnings("unchecked")
     public static void game(int numberOfQuestions){
-
 
         System.out.println("\n Welcome to Kenzie Trivia! " +
                 "\n The most random facts known to man. " +
                 "\n \n You have " + numberToString(numberOfQuestions) + " questions, and will receive one point for each correct answer." +
                 "\n Good Luck! " +
                 "\n");
-
 
         Scanner userInput = new Scanner(System.in);
 
@@ -328,27 +289,20 @@ public abstract class Main {
         Boolean isCorrect = true;
 
         while (counter != numberOfQuestions + 1) {
-
             String response;
             try {
-
                 //Question counter
                 System.out.println("Question " + counter);
-
                 //Random number
                 int random = randomNumber();
-
                 // Finding a random clue using the URL
                 String specificClue = (findSpecificClue(random));
 
-
                 ObjectMapper mapper = new ObjectMapper();
                 Map<String, String> result = mapper.readValue(specificClue, HashMap.class);
-
                 // Pulling question and answer saving as a String value
                 String valueOfQuestion = (String)result.get("question");
                 String valueOfAnswer = (String)result.get("answer");
-
                 // Displaying the score after the first question
                 if (!(counter == 1)) {
                     if (correctCounter == 0) {
@@ -359,7 +313,6 @@ public abstract class Main {
                         System.out.println("Score: " + correctCounter + "/" + (counter-1));
                     }
                 }
-
                 // Not giving a second chance for empty String
 //                System.out.println("The category is " + pullTitle(random));
 //
@@ -379,7 +332,6 @@ public abstract class Main {
 //                    isCorrect = false;
 //                }
 
-
                 // Giving a second chance for an empty String
                 System.out.println("The category is " + pullTitle(random));
 
@@ -389,9 +341,7 @@ public abstract class Main {
                 String answer = userInput.nextLine();
                 String formatAnswer = answer.toLowerCase();
 
-
                 if (!(formatAnswer.isEmpty())){
-
                     if (formatAnswer.equalsIgnoreCase(valueOfAnswer)) {
                         System.out.println("Correct! Nice work keep it up!" + "\n");
                         correctCounter++;
@@ -400,9 +350,7 @@ public abstract class Main {
                         System.out.println("That is incorrect, the answer is, " + valueOfAnswer + randomIncorrectResponse() + "\n");
                         isCorrect = false;
                     }
-
                 } if (formatAnswer.isEmpty()){
-
                     do {
                         System.out.println("Not a valid response, You have one more chance to provide a valid answer.");
                         System.out.println("The category is " + pullTitle(random));
@@ -420,7 +368,6 @@ public abstract class Main {
                             System.out.println("That is incorrect, the answer is, " + valueOfAnswer + randomIncorrectResponse() + "\n");
                             isCorrect = false;
                         }
-
                     } while (!(formatAnswer.isEmpty()));
                 }
 
@@ -431,16 +378,11 @@ public abstract class Main {
             } catch (Exception e){
                 System.out.println(e.getMessage());
             }
-
             counter++;
-
         }
-
         System.out.println("Your final score is : " + correctCounter + "/" + (counter-1));
         endGame(correctCounter);
-
     }
-
 
     //V.S mode
     public static boolean checkingAnswer(String player, String formatAnswer, String valueOfAnswers){
@@ -450,7 +392,6 @@ public abstract class Main {
             if (formatAnswer.equalsIgnoreCase(valueOfAnswers)) {
                 System.out.println(" Player " + player + " Your answer was Correct! Nice work keep it up!");
                 isRight = true;
-
             } else {
                 System.out.println("Player " + player + ", that was not the correct answer.");
                 isRight = false;
@@ -458,23 +399,18 @@ public abstract class Main {
             return isRight;
     }
 
-
-
     @SuppressWarnings("unchecked")
     public static void gameVSMode(int numberOfQuestions, int numberOfPlayers){
-
 
     if (numberOfPlayers == 1){
         game(numberOfQuestions);
     }
-
         System.out.println("\n Welcome to Kenzie Trivia v.s Mode!!! " +
                 "\n The most random facts known to man. " +
                 "\n \n You have " + numberToString(numberOfQuestions) + " total questions, each player will receive one point for each correct answer." +
                 "\n Who ever has the most points in the end will be Crowned the champion of Kenzie Trivia!! " +
                 "\n Good Luck! " +
                 "\n");
-
 
         Scanner userInput = new Scanner(System.in);
         Scanner userInput2 = new Scanner(System.in);
@@ -490,21 +426,16 @@ public abstract class Main {
 
     Boolean isCorrect = true;
 
-
         while (counter != numberOfQuestions + 1) {
 
             String response;
             try {
-
                 //Question counter
                 System.out.println("Question " + counter);
-
                 //Random number
                 int random = randomNumber();
-
                 // Finding a random clue using the URL
                 String specificClue = (findSpecificClue(random));
-
 
                 ObjectMapper mapper = new ObjectMapper();
                 Map<String, String> result = mapper.readValue(specificClue, HashMap.class);
@@ -535,7 +466,6 @@ public abstract class Main {
                         System.out.println("Score: " + player4CorrectCounter + "/" + (counter - 1) + "\n");
                     }
                 }
-
                 // Not giving a second chance for empty String
 //                System.out.println("The category is " + pullTitle(random));
 //
@@ -555,9 +485,7 @@ public abstract class Main {
 //                    isCorrect = false;
 //                }
 
-
                 // Giving a second chance for an empty String
-
                 System.out.println("The category is " + pullTitle(random));
                 System.out.println(valueOfQuestion);
 
@@ -573,17 +501,14 @@ public abstract class Main {
                    if (checkingAnswer("one",format1Answer,valueOfAnswer) == true) {
                        player1CorrectCounter ++;
                    }
-
                    if (checkingAnswer("two", format2Answer, valueOfAnswer) == true) {
                        System.out.println("\n \n");
                        player2CorrectCounter++;
                    }
-
                     System.out.println("The correct answer was " + valueOfAnswer + "\n \n");
-
                 }
-                if (numberOfPlayers == 3){
 
+                if (numberOfPlayers == 3){
                     System.out.println("Player one, what's your answer?");
                     String user1Answer = userInput.nextLine();
                     String format1Answer = user1Answer.toLowerCase();
@@ -596,7 +521,6 @@ public abstract class Main {
                     String user3Answer = userInput3.nextLine();
                     String format3Answer = user3Answer.toLowerCase();
 
-
                     if (checkingAnswer("one",format1Answer,valueOfAnswer) == true) {
                         player1CorrectCounter ++;
                     }
@@ -606,15 +530,11 @@ public abstract class Main {
                     if (checkingAnswer("three", format3Answer, valueOfAnswer) == true){
                         player3CorrectCounter ++;
                     }
-
                     System.out.println("\n ");
-
                     System.out.println("The correct answer was " + valueOfAnswer+ "\n \n");
-
                 }
 
                 if (numberOfPlayers == 4){
-
                     System.out.println("Player one, what's your answer?");
                     String user1Answer = userInput.nextLine();
                     String format1Answer = user1Answer.toLowerCase();
@@ -631,7 +551,6 @@ public abstract class Main {
                     String user4Answer = userInput4.nextLine();
                     String format4Answer = user4Answer.toLowerCase();
 
-
                     if (checkingAnswer("one",format1Answer,valueOfAnswer) == true) {
                         player1CorrectCounter ++;
                     }
@@ -646,22 +565,15 @@ public abstract class Main {
                     }
 
                     System.out.println("\n");
-
                     System.out.println("The correct answer was " + valueOfAnswer+ "\n \n");
-
                 }
-
-
             } catch (Exception e){
                 System.out.println(e.getMessage());
             }
-
            counter++;
-
         }
 
         if (numberOfPlayers == 2) {
-
             System.out.println("The Final Scores");
             System.out.println(player1CorrectCounter + "/" + (counter - 1));
             System.out.println(player2CorrectCounter + "/" + (counter - 1));
@@ -678,12 +590,10 @@ public abstract class Main {
         }
 
             if (numberOfPlayers == 3) {
-
                 System.out.println("The Final Scores");
                 System.out.println(player1CorrectCounter + "/" + (counter - 1));
                 System.out.println(player2CorrectCounter + "/" + (counter - 1));
                 System.out.println(player3CorrectCounter + "/" + (counter - 1));
-
 
                 if (player1CorrectCounter > player2CorrectCounter && player1CorrectCounter > player3CorrectCounter) {
                     System.out.println("Player one wins with a score of " + numberToString(player1CorrectCounter) + " points!");
@@ -697,10 +607,9 @@ public abstract class Main {
                 if (player1CorrectCounter == player2CorrectCounter && player2CorrectCounter == player3CorrectCounter){
                     System.out.println("Great game everyone. Unfortunately there was no decisive winner today.");
                 }
-
             }
-            if (numberOfPlayers == 4) {
 
+            if (numberOfPlayers == 4) {
                 System.out.println("The Final Scores");
                 System.out.println(player1CorrectCounter + "/" + (counter - 1));
                 System.out.println(player2CorrectCounter + "/" + (counter - 1));
@@ -725,15 +634,11 @@ public abstract class Main {
             }
         }
 
-
-
     public static void fullGame(){
-
         String multiplayer = "multiplayer";
         String singlePlayer= "single player";
 
         try {
-
             Scanner gameplay = new Scanner(System.in);
 
             System.out.println("Welcome to Kenzie Trivia");
@@ -741,7 +646,6 @@ public abstract class Main {
 
             String input1 = gameplay.nextLine();
             String formatInput1 = input1.toLowerCase();
-
 
             if (input1.equalsIgnoreCase(multiplayer)){
                 System.out.println( "How many players are you playing with? Your can play with up to four.");
@@ -761,9 +665,7 @@ public abstract class Main {
                     int questions = gameplay.nextInt();
                     gameVSMode(questions,players1);
                 }
-
             }
-
             if (input1.equalsIgnoreCase(singlePlayer)){
                 System.out.println( "How many questions would you like?");
                 int questions = gameplay.nextInt();
@@ -798,8 +700,8 @@ public abstract class Main {
                         int questions = gameplay.nextInt();
                         gameVSMode(questions,players1);
                     }
-
                 }
+
                 //Single player option
                 if (input1.equalsIgnoreCase(singlePlayer)){
                     System.out.println( "How many questions would you like?");
@@ -808,27 +710,18 @@ public abstract class Main {
                     game(questions);
                 }
             }
-
         } catch (Exception e){
             System.out.println(e.getMessage());
             System.out.println("Not following directions looses your privilege to choose what you get to play.");
             game(10);
         }
-
-
     }
 
-
-
     public static String noPunctuation(String str){
-
        // String returnString = str.replaceAll("[^a-zA-Z0-9]", "");
-
         String returnString = str.replaceAll("\\p{Punct}", "");
         return returnString;
     }
-
-
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args){
@@ -842,17 +735,13 @@ public abstract class Main {
 
     Scanner userInput = new Scanner(System.in);
 
-
     int counter = 1;
     int correctCounter = 0;
     Boolean isCorrect = true;
 
-
         while (counter != 11) {
-
             String response;
             try {
-
                 //Question counter
                 System.out.println("Question " + counter);
 
@@ -861,7 +750,6 @@ public abstract class Main {
 
                 // Finding a random clue using the URL
                 String specificClue = (findSpecificClue(random));
-
 
                 ObjectMapper mapper = new ObjectMapper();
                 Map<String, String> result = mapper.readValue(specificClue, HashMap.class);
@@ -881,7 +769,6 @@ public abstract class Main {
                         System.out.println("Score: " + correctCounter + "/" + (counter-1));
                     }
                 }
-
                 // Not giving a second chance for empty String
 //                System.out.println("The category is " + pullTitle(random));
 //
@@ -901,7 +788,6 @@ public abstract class Main {
 //                    isCorrect = false;
 //                }
 
-
                 // Giving a second chance for an empty String
                 System.out.println("The category is " + pullTitle(random));
 
@@ -911,7 +797,6 @@ public abstract class Main {
                 String answer = userInput.nextLine();
                 String formatAnswer = answer.toLowerCase();
                 String formatAnswerNoPunc = noPunctuation(formatAnswer);
-
 
                 if (!(formatAnswer.isEmpty())){
 
@@ -923,9 +808,7 @@ public abstract class Main {
                         System.out.println("That is incorrect, the answer is, " + valueOfAnswer + randomIncorrectResponse() + "\n");
                         isCorrect = false;
                     }
-
                 } if (formatAnswer.isEmpty()){
-
                     do {
                         System.out.println("Not a valid response, You have one more chance to provide a valid answer.");
                         System.out.println("The category is " + pullTitle(random));
@@ -944,47 +827,25 @@ public abstract class Main {
                             System.out.println("That is incorrect, the answer is, " + valueOfAnswer + randomIncorrectResponse() + "\n");
                             isCorrect = false;
                         }
-
                     } while (!(formatAnswer.isEmpty()));
-
                 }
-
                 storeTriviaData().put("questionID : ", counter);
                 storeTriviaData().put("question : ", valueOfQuestion);
                 storeTriviaData().put("wasCorrect : ", isCorrect);
-
-
             } catch (Exception e){
                 System.out.println(e.getMessage());
             }
-
            counter++;
-
-
         }
 
         System.out.println("Your final score is : " + correctCounter + "/" + (counter-1));
-
         endGame(correctCounter);
-
-
-
-
 
                                     //TODO EXTRA OPTIONAL FINISHING TOUCHES BELOW
 
         fullGame();
 
-
-
-
-
     }
-
-
-
-
-
     }
 
 
